@@ -1,42 +1,33 @@
 package bankAccount;
 
+import com.sun.org.apache.bcel.internal.generic.ARETURN;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Scanner;
 
 public class Users {
-    public static String name;
-    public static String password;
-    public static String dateOfBirth;
-    public static String marriageStatus;
-    public static String haveCard;
-    public static String relativeName;
-    public static String relativeAge;
-    public static String relativeStatus;
+    public  String name;
+    public  String password;
+    public  String dateOfBirth;
+    public  String marriageStatus;
+    public  String haveCard;
+    public  String relativeName;
+    public  String relativeAge;
+    public  String relativeStatus;
     public static String isTransferedSuceesfully;
-    public static int accountNumber1;
-    public static int amountAccount1;
-    public static int accountNumber2;
-    public static int amountAccount2;
+    public final int accountNumber1;
+    public  int amountAccount1;
+    public final int accountNumber2;
+    public  int amountAccount2;
 
-    public Users(String name, String password, String dateOfBirth, String marriageStatus, int amountAccount1, int amountAccount2) {
-        this.name = name;
-        this.password = password;
-        this.haveCard = haveCard(dateOfBirth);
-        this.marriageStatus = checkMariageStatus(marriageStatus);
-        this.dateOfBirth = dateOfBirth;
-        this.accountNumber1 = randomNumberCreader();
-        this.amountAccount1 = amountAccount1;
-        this.accountNumber2 = randomNumberCreader();
-        this.amountAccount2 = amountAccount2;
-        this.relativeName = AddRelative.fullName;
-        this.relativeAge = AddRelative.age;
-        this.relativeStatus = AddRelative.relativeStatus;
-    }
+
+
+
 
     @Override
     public String toString() {
-        /*char[] animationChars = new char[]{'|', '/', '-', '\\'};
+        char[] animationChars = new char[]{'|', '/', '-', '\\'};
 
         for (int i = 0; i <= 100; i++) {
             System.out.print("Processing: " + i + "% " + animationChars[i % 4] + "\r");
@@ -46,21 +37,21 @@ public class Users {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }*/
-        return "Account Info{" +
-                "\nName=" + name +
-                " \nPassword=" + password +
-                " \nDate of Birth=" + dateOfBirth + '\'' +
-                " \nHave a Card=" + haveCard + '\'' +
-                " \nMarriage Status=" + marriageStatus + '\'' +
-                " \nRelative Name=" + relativeName + '\'' +
-                " \nRelative Age=" + relativeAge + '\'' +
-                " \nRelative Status=" + relativeStatus + '\'' +
-                " \nIs Transfered Suceesfully=" + isTransferedSuceesfully + '\'' +
-                " \nAccount Number1=" + accountNumber1 +
-                " \nAmount Account1=" + amountAccount1 +
-                " \nAccount Number2=" + accountNumber2 +
-                " \nAmount Account2=" + amountAccount2 + '}';
+        }
+        return  "\n\nACCOUNT INFO {" +
+                "\n\nName=" + name +
+                "\nPassword=" + password +
+                "\nDate of Birth=" + dateOfBirth +
+                "\nHave a Card=" + haveCard +
+                "\nMarriage Status=" + marriageStatus +
+                "\nRelative Name=" + relativeName +
+                "\nRelative Age=" + relativeAge +
+                "\nRelative Status=" + relativeStatus +
+                "\nIs Transfered Suceesfully=" + isTransferedSuceesfully +
+                "\nAccount Number1=" + accountNumber1 +
+                "\nAmount Account1=" + amountAccount1 +
+                "\nAccount Number2=" + accountNumber2 +
+                "\nAmount Account2=" + amountAccount2 + "\n\n"+'}';
     }
 
     public int randomNumberCreader() {
@@ -71,16 +62,26 @@ public class Users {
         Scanner input = new Scanner(System.in);
         if (marriageStatus.equalsIgnoreCase("married")) {
             System.out.print("Do you want to add add your relative?(Y/N)");
-            if (input.nextLine().equalsIgnoreCase("Y")) {
+            String choose=input.nextLine();
+            if (choose.equalsIgnoreCase("Y")) {
+                AddRelative relative=new AddRelative();
                 System.out.print("What is your relative name?");
-                String relativeName = input.nextLine();
+                relative.setFullName(input.nextLine());
+                this.relativeName=relative.getFullName();
                 System.out.print("Date of birth relative?");
-                String relativeAge = input.nextLine();
-                AddRelative relative = new AddRelative(relativeName, relativeAge, relativeAge);
+                String age=input.nextLine();
+                relative.setAge(age);
+                this.relativeAge=relative.getAge();
+                relative.setRelativeStatus(age);
+                this.relativeStatus=relative.getRelativeStatus();
                 return "married";
-            }
+            } else if (choose.equalsIgnoreCase("N")){
+                AddRelative relative1=new AddRelative();
+                return "married";
+            }else System.out.println("Incorrect entry.\nCould not add relative.");
+        }
             return "married";
-        } else return "single";
+
     }
 
     public static boolean checkAge(String myDOB) {
@@ -103,7 +104,7 @@ public class Users {
     public void transfer(Users u1, Users u2) {
         Scanner inputStr = new Scanner(System.in);
         Scanner inputInt = new Scanner(System.in);
-        System.out.print("Do you want to transfer between your accounts or different user");
+        System.out.print("Do you want to transfer between your accounts or different user?(own/different)");
         String kimlerArasi = inputStr.nextLine();
         if (!(kimlerArasi.equalsIgnoreCase("own") || kimlerArasi.equalsIgnoreCase("different")))
             System.out.println("hatalı giriş");
@@ -118,6 +119,21 @@ public class Users {
             }
         }
     }
+    public Users(String name, String password, String dateOfBirth, String marriageStatus, int amountAccount1, int amountAccount2) {
+        this.name = name;
+        this.password = password;
+        this.haveCard = haveCard(dateOfBirth);
+        this.marriageStatus = checkMariageStatus(marriageStatus);
+        this.dateOfBirth = dateOfBirth;
+        this.accountNumber1 = randomNumberCreader();
+        this.amountAccount1 = amountAccount1;
+        this.accountNumber2 = randomNumberCreader();
+        this.amountAccount2 = amountAccount2;
+        this.relativeName = relativeName;
+        this.relativeAge = relativeAge;
+        this.relativeStatus = relativeStatus;
+    }
+
 }
 
 

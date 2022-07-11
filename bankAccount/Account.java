@@ -11,24 +11,25 @@ public class Account {
 
     public static void transferOtherUser(Users sendingUser, Users receivingUser, int transferAmount) {
         if (transferAmount > sendingUser.amountAccount1) {
-            System.out.println("Sender is poor lol :)");
-            Users.isTransferedSuceesfully="transfer failed";
+            System.out.println("Sender is poor lol :)\n");
+            Users.isTransferedSuceesfully="Transfer Failed";
         } else {
             sendingUser.amountAccount1=withDraw(sendingUser.amountAccount1,transferAmount);
             receivingUser.amountAccount1=deposit(receivingUser.amountAccount1, transferAmount);
-            System.out.println("Transaction is completed successfully");
-            Users.isTransferedSuceesfully="transfer successful";
+            System.out.println("Transaction is completed successfully.\n");
+
+            Users.isTransferedSuceesfully="Transfer Successful";
         }
     }
     public static void transferToOwnAccount(Users sendingUser, int transferAmount) {
         if (transferAmount > sendingUser.amountAccount1) {
-            System.out.println("You need more money dude");
-            Users.isTransferedSuceesfully="transfer failed";
+            System.out.println("You need more money dude:(\n");
+            Users.isTransferedSuceesfully="Transfer Failed";
         } else {
             sendingUser.amountAccount1=withDraw(sendingUser.amountAccount1, transferAmount);
             sendingUser.amountAccount2=deposit(sendingUser.amountAccount2, transferAmount);
-            System.out.println("Transaction is completed successfully");
-            Users.isTransferedSuceesfully="transfer successful";
+            System.out.println("Transaction is completed successfully.\n");
+            Users.isTransferedSuceesfully="Transfer Successful";
         }
     }
 
