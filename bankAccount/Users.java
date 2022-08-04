@@ -1,6 +1,6 @@
 package bankAccount;
 
-import com.sun.org.apache.bcel.internal.generic.ARETURN;
+import sun.font.DelegatingShape;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -60,25 +60,34 @@ public class Users {
         if (marriageStatus.equalsIgnoreCase("married")) {
             System.out.print("Do you want to add add your relative?(Y/N)");
             String choose = input.nextLine();
-            if (choose.equalsIgnoreCase("Y")) {
-                AddRelative relative = new AddRelative();
-                System.out.print("What is your relative name?");
-                relative.setFullName(input.nextLine());
-                this.relativeName = relative.getFullName();
-                System.out.print("Date of birth relative?(dd/mm/yyyy)");
-                String age = input.nextLine();
-                if (age.length() == 10 && age.replaceAll("[0-9]", "").equalsIgnoreCase("//")) {
-                    relative.setAge(age);
-                    this.relativeAge = relative.getAge();
-                    relative.setRelativeStatus(age);
-                    this.relativeStatus = relative.getRelativeStatus();
-                } else System.out.println("You entered the wrong date.\n" +
-                                           "Could not add date of birth.");
-                return "married";
-            } else if (choose.equalsIgnoreCase("N")) {
-                AddRelative relative1 = new AddRelative();
-                return "married";
-            } else System.out.println("Incorrect entry.\nCould not add relative.");
+            do {
+
+                if (choose.equalsIgnoreCase("Y")) {
+                    AddRelative relative = new AddRelative();
+                    System.out.print("What is your relative name?");
+                    relative.setFullName(input.nextLine());
+                    this.relativeName = relative.getFullName();
+                    System.out.print("Date of birth relative?(dd/mm/yyyy)");
+                    String age = input.nextLine();
+                    if (age.length() == 10 && age.replaceAll("[0-9]", "").equalsIgnoreCase("//")) {
+                        relative.setAge(age);
+                        this.relativeAge = relative.getAge();
+                        relative.setRelativeStatus(age);
+                        this.relativeStatus = relative.getRelativeStatus();
+                    } else System.out.println("You entered the wrong date.\n" +
+                            "Could not add date of birth.");
+                    return "married";
+                } else if (choose.equalsIgnoreCase("N")) {
+                    AddRelative relative1 = new AddRelative();
+                    return "married";
+                } else {
+                    System.out.println("Incorrect entry.\nCould not add relative.\nTry again");
+                    System.out.print("Do you want to add add your relative?(Y/N)");
+                    choose = input.nextLine();
+                }
+
+            } while (!(choose.equalsIgnoreCase("y") && choose.equalsIgnoreCase("n")));
+
         }
         return "married";
 
@@ -103,21 +112,37 @@ public class Users {
 
     public void transfer(Users u1, Users u2) {
         Scanner inputStr = new Scanner(System.in);
-        Scanner inputInt = new Scanner(System.in);
         System.out.print("Do you want to transfer between your accounts or different user?(own/different)");
         String kimlerArasi = inputStr.nextLine();
-        if (!(kimlerArasi.equalsIgnoreCase("own") || kimlerArasi.equalsIgnoreCase("different")))
-            System.out.println("Incorrect entry.\n" +
-                               "Try again.");
-        else {
-            System.out.print("How much do you want to send?");
-            int miktar = inputInt.nextInt();
+        do {
             if (kimlerArasi.equalsIgnoreCase("own")) {
-                Account.transferToOwnAccount(u1, miktar);
+                System.out.print("How much do you want to send?");
+                String miktar = inputStr.nextLine();
+                if (miktar.replaceAll("[0-9]", "").equalsIgnoreCase("")) {
+                    Account.transferToOwnAccount(u1, Integer.parseInt(miktar));
+                } else {
+                    System.out.println("Incorrect entry.\nTry again.");
+                    transfer(u1, u2);
+
+                }
             } else if (kimlerArasi.equalsIgnoreCase("different")) {
-                Account.transferOtherUser(u1, u2, miktar);
+                System.out.print("How much do you want to send?");
+                String miktar = inputStr.nextLine();
+                if (miktar.replaceAll("[0-9]", "").equalsIgnoreCase("")) {
+                    Account.transferOtherUser(u1, u2, Integer.parseInt(miktar));
+                } else {
+                    System.out.println("Incorrect entry.\nTry again.");
+                    transfer(u1, u2);
+                }
+            } else {
+                System.out.println("Incorrect entry.\nTry again.");
+                System.out.print("Do you want to transfer between your accounts or different user?(own/different)");
+                kimlerArasi = inputStr.nextLine();
+
             }
-        }
+
+        } while (!(kimlerArasi.equalsIgnoreCase("own") || kimlerArasi.equalsIgnoreCase("different")));
+
     }
 
     public Users(String name, String password, String dateOfBirth, String marriageStatus, int amountAccount1, int amountAccount2) {
@@ -134,6 +159,7 @@ public class Users {
         this.relativeAge = relativeAge;
         this.relativeStatus = relativeStatus;
     }
+
 
 }
 
